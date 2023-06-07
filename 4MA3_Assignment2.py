@@ -1,21 +1,23 @@
 def forward_substitution(matrix, vector, n):
     '''
     Algorithm 1: Forward Substitution (Lower Triangle). Ex: 
-    # 1  0  0  0 
-    # 3  1  0  0
-    # 4  1  1  0 
-    # 2  1  1  1 
+    1  0  0  0 
+    3  1  0  0
+    4  1  1  0 
+    2  1  1  1 
     '''
     output_matrix = [[0.0] * n for _ in range(n)]
-
+    print(f'\n\033[92mForward Substitution - Results\033[0m')
     for i in range(n):
         output_matrix[i] = vector[i]
+        print(f"\nx{i+1}:\n{vector[i]} = {' + '.join([f'({k})x{(j+1)}' for j,k in enumerate(matrix[i])])}")
         for j in range(i):
+            print(f"= {output_matrix[i]} - ({matrix[i][j]} * {output_matrix[j]})")
             output_matrix[i] -= matrix[i][j] * output_matrix[j]
+        print(f"x{i+1} = {output_matrix[i]} / {matrix[i][i]}")
         output_matrix[i] /= matrix[i][i]
-    
-    print(f'\n\033[92mForward Substitution - Results\033[0m')
-    display_vector(output_matrix)
+        print(f"x{i+1} = {output_matrix[i]}")
+    display_x(output_matrix)
 
 
 def backward_substitution(matrix, vector, n):
@@ -27,14 +29,17 @@ def backward_substitution(matrix, vector, n):
     0  0  0 -2
     '''
     output_matrix = [[0.0] * n for _ in range(n)]
-
+    print(f'\n\033[92mBackward Substitution - Results\033[0m')
     for i in range(n-1, -1, -1):
         output_matrix[i] = vector[i]
+        print(f"\nx{i+1}:\n{vector[i]} = {' + '.join([f'({k})x{(j+1)}' for j,k in enumerate(matrix[i])])}")
         for j in range(i+1, n):
+            print(f"= {output_matrix[i]} - ({matrix[i][j]} * {output_matrix[j]})")
             output_matrix[i] -= matrix[i][j] * output_matrix[j]
+        print(f"x{i+1} = {output_matrix[i]} / {matrix[i][i]}")
         output_matrix[i] /= matrix[i][i]
-    print(f'\n\033[92mBackward Substitution - Results\033[0m')
-    display_vector(output_matrix)
+        print(f"x{i+1} = {output_matrix[i]}\n")
+    display_x(output_matrix)
 
 
 def lu_decomposition(a_matrix, b_vector):
@@ -60,7 +65,10 @@ def lu_decomposition(a_matrix, b_vector):
             b_vector[i] -= factor * b_vector[k]
             display_vector(b_vector)
     
-    print(f'\033[92mFINAL B VECTOR {(b_vector)}\033[0m')
+    print(f'\n\033[92mFINAL MATRIX:  A=\033[0m')
+    display_matrix(a_matrix)
+    print(f'\n\033[92mFINAL VECTOR:  b=\033[0m')
+    display_vector(b_vector)
     print(f'\n\033[92mLower Matrix (L) =\033[0m')
     display_matrix(L)
     forward_substitution(L, b_vector, n)
@@ -71,7 +79,7 @@ def lu_decomposition(a_matrix, b_vector):
 
 
 def display_matrix(matrix):
-    print('Updated Matrix:')
+    print('Updated Matrix (A):')
     print('----------------------------')
     for row in matrix:
         for element in row:
@@ -81,18 +89,27 @@ def display_matrix(matrix):
 
 
 def display_vector(b_vector):
-    print('Updated Vector:')
+    print('Updated Vector (b):')
     print('--------')
     for item in b_vector:
         print([item])
     print('--------\n')
+
+
+def display_x(b_vector):
+    print('\nx:')
+    print('--------')
+    for index, item in enumerate(b_vector, start=1):
+        print(f'x{index} = {item}')
+    print('--------\n')
+
 
 def main():
 
     A_matrix = [[1, 2, 1,-1], 
                 [3, 2, 4, 4],
                 [4, 4, 3, 4],
-                [2, 0, 1, 4]]
+                [2, 0, 1, 5]]
 
     b_vector = [5, 16, 22, 15]
 
