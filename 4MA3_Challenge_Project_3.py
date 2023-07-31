@@ -53,13 +53,13 @@ def NewtonB():
 
     # initial guess for x0
     x = 7
-    y = 5
+    y = 0.5
     xn = np.array([x, y], dtype=np.float64)
 
     # ref. jacobian matrix
     # [ -y   -2y-x ]
     # [ 4y-1    4x ]
-    jf_origin = np.array([[(-x),     (-2*(y))-x], 
+    jf_origin = np.array([[(-y),        (-2*(y))], 
                           [((4*y)-1),       4*x]])
 
     for k in range (0, max_iterations):   
@@ -76,9 +76,9 @@ def NewtonB():
         for n in fx:
             neg_fx.append(n*(-1))
         so = GaussElimination(jfx, neg_fx)
-        
+
+        print(so)
         new_row.extend([k, xn[0], xn[1], fx[0], fx[1]])
-        new_row = [round(value, 6) for value in new_row]
         output_data.extend([new_row])
         
         xn = so + x
@@ -95,7 +95,7 @@ def fxn(x):
     # 4xy - x
     fx_00 = (4*x[0]*x[1] - x[0])
     # -y^2 - xy - 1
-    fx_01 = ((-x[1]**2) - (x[0]*x[1]) + 1)
+    fx_01 = (-(x[1]**2)) - (x[0]*x[1]) + 1
 
     return np.array([fx_00, fx_01])
 
